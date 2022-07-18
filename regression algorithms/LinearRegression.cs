@@ -15,10 +15,13 @@ namespace regression_algorithms
         double[] w = {};
 
         /**
-        X (2D array) is an array of features
-        y (1D array) is an array of labels
+        X (2D array) is Data, m examples with n features
+        y (1D array) is an array of m target values
         b (scalar) is the bias (model parameter)
-        w (1D array) are the weights (model parameters)
+        w (1D array) are the weights (n model parameters)
+
+        m is the number of data examples
+        n is the number of features
 
          */
 
@@ -27,14 +30,14 @@ namespace regression_algorithms
             this.X = X;
             this.y = y;
 
-            // initializing the values of w based on the length of X
+            // initializing the values of w based on the number of features.
             for(int i = 0; i < X[0].Length; i++)
             {
                 this.w[i] = 0.3;
             }
         }
 
-        double model_predict(double[] x)
+        double ModelPredict(double[] x)
         {
             /** 
                The linear model is represented by f(x) = w.x + b where w and x are vectors. 
@@ -51,6 +54,30 @@ namespace regression_algorithms
 
             return p;
 
+        }
+
+        double ComputeCost()
+        {
+            /*
+             * Returns:
+             *  cost (scaler): cost;  i.e using the current values of the model parameters, w and b.
+            */
+
+            int m = X.Length;
+            double cost = 0;
+
+            // summing the squared error across data
+            for (int i = 0; i < m; i++)
+            {
+                double f_wb_i = this.ModelPredict(X[i]);
+                double error = Math.Pow((f_wb_i - y[i]), 2);
+                cost += error;
+            }
+
+            // the mean of the total squared error 
+            cost = cost / (2 * m);
+
+            return cost;
         }
     }
 }
