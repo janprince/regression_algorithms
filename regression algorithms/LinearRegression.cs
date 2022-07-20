@@ -11,8 +11,8 @@ namespace regression_algorithms
     {
         private double[][] X;
         private double[] y;
-        double b = 0;
-        double[] w = {};
+        public double b = 0;
+        public double[] w;
 
         /**
         X (2D array) is Data, m examples with n features
@@ -25,16 +25,20 @@ namespace regression_algorithms
 
          */
 
-        LinearRegression(double[][] X, double[] y, double b, double[] w)
+        // constructor
+        public LinearRegression(double[][] X, double[] y)
         {
             this.X = X;
             this.y = y;
 
             // initializing the values of w based on the number of features.
-            for(int i = 0; i < X[0].Length; i++)
+            double[] w = new double[X[0].Length];
+            for (int i = 0; i < X[0].Length; i++)
             {
-                this.w[i] = 0.3;
+                w[i] = 0.3;
             }
+
+            this.w = w;
         }
 
         double ModelPredict(double[] x)
@@ -154,6 +158,12 @@ namespace regression_algorithms
                 this.b = this.b - (alpha * dj_db);
 
             }
+        }
+        void Fit(double[][] X, double[] y)
+        {
+            this.GradientDescent(1000, 0.00005f);
+
+            Console.WriteLine("b: " + this.b);
         }
     }
 }
