@@ -81,7 +81,7 @@ namespace regression_algorithms
         }
 
 
-        Object[] ComputeGradient()
+        List<dynamic> ComputeGradient()
         {
         // computes the gradient for linear regression
 
@@ -120,10 +120,40 @@ namespace regression_algorithms
             dj_db = dj_db / m;
 
             // gradients dj_db and dj_dw
-            Object[] gradients = { dj_db, dj_dw };
+            List<dynamic> gradients = new List<dynamic>();
+            gradients.Add(dj_db);
+            gradients.Add(dj_dw);
+
+            return gradients;
+        }
+
+        void GradientDescent(int num_iters, float alpha)
+        {
+            /* 
+             * num_iters (int): is the number of iterations for which gradient descent will run
+             * alpha (float): the learning rate
+             * 
+             */
+
+            for (int i = 0; i < num_iters; i++)
+            {
+
+                // Calculate the gradient and update the parameters
+                List<dynamic> gradients = this.ComputeGradient();
+
+                double dj_db = gradients[0];
+                double[] dj_dw = gradients[1];
 
 
-            return  gradients;
+                // Update parameters using w, b, alpha and gradients
+                for (int j = 0; j < dj_dw.Length; j++)
+                {
+                    this.w[j] = this.w[j] - (alpha * dj_dw[j]);
+                }
+
+                this.b = this.b - (alpha * dj_db);
+
+            }
         }
     }
 }
