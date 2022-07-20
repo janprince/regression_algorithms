@@ -79,5 +79,51 @@ namespace regression_algorithms
 
             return cost;
         }
+
+
+        Object[] ComputeGradient()
+        {
+        // computes the gradient for linear regression
+
+        /* Returns:
+            dj_dw(array): The gradient of the cost w.r.t.the parameters w.
+            dj_db(scalar):       The gradient of the cost w.r.t.the parameter b.
+        */
+
+            int m = this.X.Length;                  // number of exmaples
+            int n = this.X[0].Length;               // number of features
+
+            double dj_db = 0;
+            double[] dj_dw = { };
+
+            // initializing values for dj_dw and dj_db
+            for (int i = 0; i < n; i++) { dj_dw[i] = 0; }
+
+            
+            for(int i = 0; i < m; i++)
+            {
+                double err = this.ModelPredict(X[i]) - y[i];
+                
+                for (int j = 0; j < n; j++)
+                {
+                    dj_dw[j] = dj_dw[j] + (err * this.X[i][j]);
+                }
+                dj_db = dj_db + err;
+                
+            }
+
+            for (int i=0; i < dj_dw.Length; i++)
+            {
+                dj_dw[i] = dj_dw[i] / m; 
+            }
+
+            dj_db = dj_db / m;
+
+            // gradients dj_db and dj_dw
+            Object[] gradients = { dj_db, dj_dw };
+
+
+            return  gradients;
+        }
     }
 }
